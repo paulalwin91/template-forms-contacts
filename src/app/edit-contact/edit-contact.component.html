@@ -2,52 +2,72 @@
   <h1 class="header">
     Edit Contact
   </h1>
-  <form>
+  <form [formGroup]="contactForm" (ngSubmit)="saveContact()">
     <section>
       <nav>Name/Info</nav>
       <div>
-        <input placeholder="First Name" />
-        <input placeholder="Last Name" />
-        <input placeholder="Date of Birth" />
-        <input placeholder="Favorites Ranking" />
+        <input formControlName="firstName" placeholder="First Name" [class.error]="fn().touched && fn().invalid" />
+        <em *ngIf="fn().dirty && fn().errors?.['required']">Its required.</em>
+        <em *ngIf="fn().dirty && fn().errors?.['minlength']">Needs to be 4 or more characs</em>
+        <input formControlName="lastName" placeholder="Last Name" />
+        <input formControlName="dateOfBirth" type="date" placeholder="Date of Birth" />
+        <input formControlName="favoritesRanking" type="range" min=0 max="5" placeholder="Favorites Ranking" />
+        <div>{{contactForm.controls.favoritesRanking.value}}</div>
       </div>
     </section>
     <section>
-      <nav>Phone</nav>
-      <div class="flex-column">
-        <div class="flex-group">
-          <input placeholder="Phone" />
-          <img src="/assets/plus-grey-blue.png" class="add" />
-        </div>
-        <div class="radio">
-          <input type="radio" value="mobile"> Mobile
-          <input type="radio" value="work"> Work
-          <input type="radio" value="other"> Other
-        </div>
-      </div>
-    </section>
-    <section>
-      <nav>Address</nav>
-      <div>
-        <div class="address">
+      <nav>Phone <img src="/assets/plus-grey-blue.png" class="add" (click)="addFone()" />
+      </nav>
+      <div formArrayName="phone">
+        <div *ngFor="let pngrp of phones().controls; let i = index" [formGroupName]="i" class="flex-column">
           <div class="flex-group">
-            <input placeholder="Address" />
-            <img src="/assets/plus-grey-blue.png" class="add" />
+            <img src="/assets/delete-item.png" class="add" (click)="deleteFone(i)" />
+            <input placeholder="Phone" formControlName="phoneNumber" />
+            <em *ngIf="pngrp.controls.phoneNumber.invalid">
+              Phone number is manadatory as this is preferred.</em>
           </div>
-          <input placeholder="City" />
-          <input placeholder="State/Region" />
-          <input placeholder="Zip/Postal Code" />
-          <select>
-            <option value="home">Home</option>
-            <option value="work">Work</option>
-            <option value="other">Other</option>
-          </select>
+          <div class="radio">
+            <input type="radio" formControlName="phoneType" value="mobile"> Mobile
+            <input type="radio" formControlName="phoneType" value="work"> Work
+            <input type="radio" formControlName="phoneType" value="other"> Other
+          </div>
+          <div><input type="checkbox" formControlName="preferred">Preferred</div>
         </div>
       </div>
     </section>
+    <section>
+      <nav>Address<img src="/assets/plus-grey-blue.png" class="add" (click)="addAddress()" /></nav>      
+        <div formArrayName="address">
+          <div *ngFor="let adre of address().controls; let i = index" [formGroupName]="i" class="address"
+            [class.error]="adre.touched && adre.invalid">
+            <div class="flex-group">
+              <input formControlName="streetAddress" placeholder="Address" />
+              <img src="/assets/delete-item.png" class="add" (click)="deleteAddress(i)" />
+            </div>
+            <input formControlName="city" placeholder="City" />
+            <input formControlName="state" placeholder="State/Region" />
+            <input formControlName="postalCode" placeholder="Zip/Postal Code" />
+            <select formControlName="addressType">
+              <option value="home">Home</option>
+              <option value="work">Work</option>
+              <option value="other">Other</option>
+            </select>
+            <div><input type="checkbox" formControlName="preferred">Preferred</div>
+            <em *ngIf="adre.touched && adre.invalid">Something is amiss here.</em>            
+          </div>        
+      </div>
+    </section>
+    <section>
+      <nav>Notes</nav>
+      <div>
+        <textarea placeholder="Notes" rows="5" formControlName="notes"
+          [class.error]="nts().touched && nts().errors?.['restrictedWords']"></textarea>
+        <em *ngIf="nts().dirty && nts().errors?.['restrictedWords']">Cant have these words.</em>
+      </div>
+    </section>
+    <div class="buttons">
+      <button class="secondary" [routerLink]="['/contacts']" type="button">Cancel</button>
+      <button class="primary" type="submit" [disabled]="contactForm.invalid">Save</button>
+    </div>
   </form>
-  <div class="buttons">
-    <button class="secondary">Cancel</button>
-    <button class="primary" (click)="saveContact()">Save</button>
-  </div>
 </div>

@@ -19,11 +19,11 @@
       <ng-container *ngIf="favoriteContacts.length > 0">
         <tr *ngFor="let contact of favoriteContacts" [routerLink]="['/contacts/edit', contact.id]">
           <td>{{contact.firstName}} {{contact.lastName}}</td>
-          <td><span *ngIf="contact.phone">{{contact.phone.phoneNumber}}</span></td>
+          <td><span *ngIf="contact.phone">{{contact.phone[0].phoneNumber}}</span></td>
           <td *ngIf="contact.address">
-            {{contact.address.streetAddress}}, {{contact.address.city}},
-            {{contact.address.state}},
-            {{contact.address.postalCode}}
+            {{contact.address[0].streetAddress}}, {{contact.address[0].city}},
+            {{contact.address[0].state}},
+            {{contact.address[0].postalCode}}
           </td>
         </tr>
       </ng-container>
@@ -45,11 +45,11 @@
       <ng-container *ngIf="contacts.length > 0">
         <tr *ngFor="let contact of contacts" [routerLink]="['/contacts/edit', contact.id]">
           <td>{{contact.firstName}} {{contact.lastName}}</td>
-          <td><span *ngIf="contact.phone">{{contact.phone.phoneNumber}}</span></td>
+          <td><span *ngIf="contact.phone">{{contact.phone[0].phoneNumber}}</span></td>
           <td *ngIf="contact.address">
-            {{contact.address.streetAddress}}, {{contact.address.city}},
-            {{contact.address.state}},
-            {{contact.address.postalCode}}
+            {{contact.address[0].streetAddress}}, {{contact.address[0].city}},
+            {{contact.address[0].state}},
+            {{contact.address[0].postalCode}}
           </td>
         </tr>
       </ng-container>

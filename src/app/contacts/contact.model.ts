@@ -2,15 +2,17 @@ export interface Contact {
   id: string,
   firstName: string,
   lastName: string,
-  dateOfBirth: Date | null,
+  dateOfBirth: string | null,
   favoritesRanking: number | null,
-  phone: Phone,
-  address: Address,
+  phone: Phone[],
+  address: Address[],
+  notes: string
 }
 
 export interface Phone {
   phoneNumber: string,
   phoneType: string,
+  preferred: boolean
 }
 
 export interface Address {
@@ -19,4 +21,5 @@ export interface Address {
   state: string,
   postalCode: string,
   addressType: string,
+  preferred: boolean
 }
